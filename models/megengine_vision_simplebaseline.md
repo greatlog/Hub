@@ -32,14 +32,15 @@ except: urllib.request.urlretrieve(url, filename)
 import cv2
 image = cv2.imread("cat.jpg")
 
-import official.vision.detection.retinanet_res50_coco_1x_800size as Det
-detector = Det.retinanet_res50_1x_800size(pretrained=True)
+import official.vision.detection.configs as Det
+detector = Det.retinanet_res50_coco_1x_800size(pretrained=True)
 
-models_api = hub.import_module(
+models_api = megengine.hub.import_module(
     "megengine/models",
     git_host="github.com",
 )
 
+from megengine import jit
 @jit.trace(symbolic=True)
 def det_func():
     pred = detector(detector.inputs)
